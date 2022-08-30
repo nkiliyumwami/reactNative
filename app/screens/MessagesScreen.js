@@ -1,13 +1,14 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { FlatList, StyleSheet, View} from 'react-native'
 
 import ListItem from '../components/ListItem'
+import ListItemDeleteAction from '../components/ListItemDeleteAction'
 import ListItemSeparator from '../components/ListItemSeparator'
 import Screen from '../components/Screen'
 
 
 
-const messages = [
+const initialMessages = [
     {
         id: 1,
         title: 'T1',
@@ -29,6 +30,19 @@ const messages = [
 ]
 
 function MessagesScreen() {
+    //Set a state and hook to be able to delete a message and re-render the component
+    const [messages, setMessages] = useState(initialMessages)
+
+    //State to refresh/pull to refresh
+    const [refreshing, setRefreshing] = useState(false)
+
+    //Function to delete a message 
+    const handleDelete = message => {
+        //Delete a message from a messages array//We need a state and hook
+        //We update the state and re-render
+         const newMessages = messages.filter((m) =>m.id !== message.id)
+         setMessages(newMessages)
+    }
   return (
     <Screen >
         <FlatList
@@ -40,8 +54,22 @@ function MessagesScreen() {
                 title={item.title} 
                 subTitle={item.description}
                 image={item.image}
-                onPress={() => console.log('Message selected', item)}/>} 
+                onPress={() => console.log('Message selected', item.description)}
+                renderRightActions={() => 
+                    <ListItemDeleteAction  onPress={() => handleDelete(item)}/>}
+            />} 
         ItemSeparatorComponent={ListItemSeparator}
+        refreshing={refreshing}
+        onRefresh={() => {
+            setMessages([
+                {
+                    id: 2,
+                    title: 'T2',
+                    description: 'D2',
+                    image: require('../assets/emma.jpg')
+                }
+            ])
+        }}
                 />
     </Screen>
     
