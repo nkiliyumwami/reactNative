@@ -7,7 +7,7 @@ function Screen({children, style}) {
     <SafeAreaView style={[styles.screen, style]}> 
         {/* in order to use this screen components as a native components and pass children inside */}
         {/* Safe area view doesn't accept padding: that is why our children is inside a view */}
-        <View style={style}>
+        <View style={[styles.view , style, ]}>
         {children}
         </View>
         
@@ -19,6 +19,9 @@ const styles = StyleSheet.create({
     screen: {
         paddingTop: Constants.statusBarHeight,
         flex: 1,
+    },
+    view: {
+      flex: 1,
     }
 });
 export default Screen
